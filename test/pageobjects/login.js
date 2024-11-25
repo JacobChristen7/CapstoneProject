@@ -6,24 +6,22 @@ import DefaultPage from './defaultPage.js';
 
 class Login extends DefaultPage {
     
-    get searchButton () {
+    get SearchButton () {
         return $('#store_search_link')
     }
     
-    get loginButton () {
+    get LoginButton () {
         return $('div[class="Box-s8oj9r-0 eByApt"]');
     }
 
-    get loginEmail () {
+    get LoginEmail () {
         return $('#login-email')
     }
 
 
     async login () {  
         await this.open();
-        await browser.pause(2000)
         await this.searchButton.click();
-        await browser.pause(2000)
     }
 }
 
