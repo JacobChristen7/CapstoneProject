@@ -6,22 +6,57 @@ import DefaultPage from './defaultPage.js';
 
 class Login extends DefaultPage {
     
-    get SearchButton () {
-        return $('#store_search_link')
+    get SignInButton () {
+        return $('a[ggloginbutton]')
     }
     
-    get LoginButton () {
-        return $('div[class="Box-s8oj9r-0 eByApt"]');
+    get CancelSignIn () {
+        return $('button[type="button"].btn-outline-secondary');
     }
 
-    get LoginEmail () {
-        return $('#login-email')
+    get XSignIn () {
+        return $('button[aria-label="Close"].btn-close.btn-close-white')
+    }
+
+    get UsernameInput () {
+        return $('#inputUsername')
+    }
+
+    get PasswordInput () {
+        return $('#inputPassword')
+    }
+
+    get Submit () {
+        return $('button.btn.btn-lg.btn-primary')
     }
 
 
-    async login () {  
+    async loginFullTest (username, password) {  
         await this.open();
-        await this.searchButton.click();
+        await browser.pause(1000);
+        await this.SignInButton.click();
+        await browser.pause(1000);
+        await this.CancelSignIn.click();
+        await browser.pause(1000);
+        await this.SignInButton.click();
+        await browser.pause(1000);
+        await this.XSignIn.click();
+        await browser.pause(1000);
+        await this.SignInButton.click();
+        await browser.pause(1000);
+        await this.UsernameInput.setValue(username);
+        await browser.pause(1000);
+        await this.PasswordInput.setValue(password);
+        await browser.pause(1000);
+        await this.Submit.click();
+    }
+
+    async login (username, password) {
+        await this.open();
+        await this.SignInButton.click();
+        await this.UsernameInput.setValue(username);
+        await this.PasswordInput.setValue(password);
+        await this.Submit.click();
     }
 }
 

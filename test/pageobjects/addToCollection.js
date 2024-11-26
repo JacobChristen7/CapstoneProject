@@ -6,16 +6,16 @@ import DefaultPage from './defaultPage.js';
 
 class AddToCollection extends DefaultPage {
 
-    get SearchBar {
+    get SearchBar () {
         return $('input[name="searchTerm"]')
     }
 
-    get SearchButton {
+    get SearchButton () {
         return $('button[type="submit"]')
     }
 
 
-    async SearchForGame(gameName) {
+    async searchForGame(gameName) {
         await this.open();
         await this.SearchBar.setValue(gameName);
         await browser.pause(2000);

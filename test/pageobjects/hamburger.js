@@ -1,7 +1,8 @@
 import { $ } from '@wdio/globals'
 import { expect } from '@wdio/globals'
 import { browser } from '@wdio/globals'
-import DefaultPage from './defaultPage.js';
+import DefaultPage from './defaultPage.js'
+import Login from './login.js'
 
 
 class HamburgerMenu extends DefaultPage {
@@ -14,14 +15,15 @@ class HamburgerMenu extends DefaultPage {
         return $('//span[contains(text(), "+ Show more")]')
     }
 
+    get ItemPageNameCheck () {
+        return $('a[ui-sref="geekitem.overview"] > span')
+    }
 
-    async hamburgerFunction () { //opens the sidebar just fine
-        await this.open();
-        await browser.pause(2000);
+
+    async hamburgerFunction () {
+        await Login.login('YummyZombie', 'autoTest88');
         await this.HamburgerOpen.click();
-        await browser.pause(2000);
         await this.ShowMoreButton.click();
-        await browser.pause(2000)
     }
 
     async theHotnessCheck () {
@@ -30,7 +32,8 @@ class HamburgerMenu extends DefaultPage {
             const text = await hotnessItems[i].getText();
             console.log(`Item ${i + 1}: ${text}`);
             await hotnessItems[i].click();
-            //await expect(browser).toHaveUrlContaining(text);
+            await expect(this.ItemPageNameCheck).toHaveText(
+                expect.stringContaining(text))
             await browser.back();
             await this.HamburgerOpen.click();
             //await this.ShowMoreButton.click();
