@@ -30,6 +30,18 @@ class Login extends DefaultPage {
         return $('button.btn.btn-lg.btn-primary')
     }
 
+    get ForgotUsernameLink () {
+        return $('a[href="/geekaccount/forgotusername"]')
+    }
+
+    get ForgotPasswordLink () {
+        return $('a[href="/geekaccount/forgotpassword"]')
+    }
+
+    get SignInLinkCheck () {
+        return $('h3[align="center"]')
+    }
+
 
     async loginFullTest (username, password) {  
         await this.open();
@@ -43,6 +55,20 @@ class Login extends DefaultPage {
         await this.XSignIn.click();
         await browser.pause(1000);
         await this.SignInButton.click();
+        await browser.pause(1000);
+        await this.ForgotUsernameLink.click();
+        //await expect(browser).toHaveUrl('https://boardgamegeek.com/geekaccount/forgotusername');
+        //await expect(this.SignInLinkCheck).toHaveText(
+            //expect.stringContaining("Forgot Username"))
+        await browser.pause(1000);
+        await browser.back();
+        await browser.pause(1000);
+        await this.ForgotPasswordLink.click();
+        //await expect(browser).toHaveUrl('https://boardgamegeek.com/geekaccount/forgotpassword');
+        //await expect(this.SignInLinkCheck).toHaveText(
+            //expect.stringContaining("Forgot Password"))
+        await browser.pause(1000);
+        await browser.back();
         await browser.pause(1000);
         await this.UsernameInput.setValue(username);
         await browser.pause(1000);

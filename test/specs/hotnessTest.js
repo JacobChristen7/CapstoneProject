@@ -1,4 +1,3 @@
-import Login from '../pageobjects/login.js';
 import HamburgerMenu from '../pageobjects/hamburger.js';
 
 
