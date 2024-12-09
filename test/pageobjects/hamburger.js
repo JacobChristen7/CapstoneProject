@@ -8,7 +8,7 @@ import Login from './login.js'
 class HamburgerMenu extends DefaultPage {
     
     get HamburgerOpen () {
-        return $('[class="btn btn-empty header-icon tw-mr-2 tw-hidden tw-self-center tw-rounded tw-p-1.5 tw-leading-none tw-outline-none hover:tw-bg-purple-dark hover:tw-text-white focus:tw-bg-purple-dark focus:tw-text-white xl:tw-block"]')
+        return $('[class="btn btn-empty header-icon tw-mr-2 tw-self-center tw-rounded tw-p-1.5 tw-leading-none tw-outline-none hover:tw-bg-purple-dark hover:tw-text-white focus:tw-bg-purple-dark focus:tw-text-white xl:tw-hidden"]')
     }
 
     get ShowMoreButton () {
@@ -21,6 +21,7 @@ class HamburgerMenu extends DefaultPage {
 
 
     async hamburgerFunction () {
+        await this.open();
         await Login.login('YummyZombie', 'autoTest88');
         await this.HamburgerOpen.click();
         await this.ShowMoreButton.click();
@@ -36,7 +37,6 @@ class HamburgerMenu extends DefaultPage {
                 expect.stringContaining(text))
             await browser.back();
             await this.HamburgerOpen.click();
-            //await this.ShowMoreButton.click();
         }
     }
 }

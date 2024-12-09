@@ -9,6 +9,10 @@ class Login extends DefaultPage {
     get SignInButton () {
         return $('a[ggloginbutton]')
     }
+
+    get SignInButtonBacked () {
+        return $('li[class="global-header-nav-session global-header-nav-primary-separated ng-scope"] > button')
+    }
     
     get CancelSignIn () {
         return $('button[type="button"].btn-outline-secondary');
@@ -38,51 +42,93 @@ class Login extends DefaultPage {
         return $('a[href="/geekaccount/forgotpassword"]')
     }
 
-    get SignInLinkCheck () {
-        return $('h3[align="center"]')
+    get LogoLink () {
+        return $('img[alt="boardgamegeek logo"]')
+    }
+
+    get LogoLinkSignUpPage () {
+        return $('img[alt="BGG Logo"]')
+    }
+
+    get SignUpLink () {
+        return $('//a[text()="Sign up"]')
+    }
+
+    get BadAttemptCheck () {
+        return $('p[role=alert]')
     }
 
 
-    async loginFullTest (username, password) {  
+    async loginFullTest () {  
         await this.open();
-        await browser.pause(1000);
         await this.SignInButton.click();
-        await browser.pause(1000);
         await this.CancelSignIn.click();
-        await browser.pause(1000);
         await this.SignInButton.click();
-        await browser.pause(1000);
         await this.XSignIn.click();
-        await browser.pause(1000);
-        await this.SignInButton.click();
-        await browser.pause(1000);
+        await this.badLogin("dajiuhi11212", "allingmes13")
         await this.ForgotUsernameLink.click();
-        //await expect(browser).toHaveUrl('https://boardgamegeek.com/geekaccount/forgotusername');
-        //await expect(this.SignInLinkCheck).toHaveText(
-            //expect.stringContaining("Forgot Username"))
-        await browser.pause(1000);
-        await browser.back();
-        await browser.pause(1000);
+        await expect(browser).toHaveUrl('https://boardgamegeek.com/geekaccount/forgotusername');
+        await this.LogoLink.click();
+        await this.SignInButton.click();
         await this.ForgotPasswordLink.click();
-        //await expect(browser).toHaveUrl('https://boardgamegeek.com/geekaccount/forgotpassword');
-        //await expect(this.SignInLinkCheck).toHaveText(
-            //expect.stringContaining("Forgot Password"))
-        await browser.pause(1000);
-        await browser.back();
-        await browser.pause(1000);
-        await this.UsernameInput.setValue(username);
-        await browser.pause(1000);
-        await this.PasswordInput.setValue(password);
-        await browser.pause(1000);
-        await this.Submit.click();
+        await expect(browser).toHaveUrl('https://boardgamegeek.com/geekaccount/forgotpassword');
+        await this.LogoLink.click();
+        await this.SignInButton.click();
+        await this.SignUpLink.click();
+        await expect(browser).toHaveUrl('https://boardgamegeek.com/join');
+        await this.LogoLinkSignUpPage.click();
+        await this.goodAndBadLogin("YummyZombie", "autoTest88", "dajiuhi11212", "allingmes13")
+        await this.login("YummyZombie", "autoTest88");
     }
 
     async login (username, password) {
-        await this.open();
         await this.SignInButton.click();
         await this.UsernameInput.setValue(username);
         await this.PasswordInput.setValue(password);
         await this.Submit.click();
+    }
+
+    async badLogin (badUsername, badPassword) {
+        await this.SignInButton.click();
+        await this.Submit.click();
+        await expect(this.BadAttemptCheck).toHaveText(
+            expect.stringContaining("Invalid username or password"));
+        await this.UsernameInput.setValue(badUsername);
+        await this.Submit.click();
+        await expect(this.BadAttemptCheck).toHaveText(
+            expect.stringContaining("Invalid username or password"));
+        await this.UsernameInput.setValue("");
+        await this.PasswordInput.setValue(badPassword);
+        await this.Submit.click();
+        await expect(this.BadAttemptCheck).toHaveText(
+            expect.stringContaining("Invalid username or password"));
+        await this.UsernameInput.setValue(badUsername);
+        await this.Submit.click();
+        await expect(this.BadAttemptCheck).toHaveText(
+            expect.stringContaining("Invalid username or password"));
+    }
+
+    async goodAndBadLogin (goodUsername, goodPassword, badUsername, badPassword) {
+        await this.SignInButton.click();
+        await this.UsernameInput.setValue(goodUsername);
+        await this.Submit.click();
+        await expect(this.BadAttemptCheck).toHaveText(
+            expect.stringContaining("Invalid username or password"));
+        await this.PasswordInput.setValue(badPassword);
+        await this.Submit.click();
+        await expect(this.BadAttemptCheck).toHaveText(
+            expect.stringContaining("Invalid username or password"));
+        await this.XSignIn.click();
+        await this.SignInButton.click();
+        await this.PasswordInput.setValue(goodPassword);
+        await this.Submit.click();
+        await expect(this.BadAttemptCheck).toHaveText(
+            expect.stringContaining("Invalid username or password"));
+        await this.UsernameInput.setValue(badUsername);
+        await this.Submit.click();
+        await expect(this.BadAttemptCheck).toHaveText(
+            expect.stringContaining("Invalid username or password"));
+        await this.CancelSignIn.click();
     }
 }
 
