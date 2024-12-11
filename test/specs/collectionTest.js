@@ -1,9 +1,8 @@
-import DefaultPage from './defaultPage.js';
-import AddToCollection from "../pageobjects/addToCollection";
+import Collection from '../pageobjects/collectionPage.js';
 
 
-describe('Add Game', () => {
-    it('Game was added to collection and removed', async () => {
-        await AddToCollection.searchForGame('Terraforming Mars');
+describe('Update status', () => {
+    it('Game statuses were applied correctly and displayed correctly', async () => {
+        await Collection.collectionFullTest();
     })
 })
