@@ -1,7 +1,7 @@
 import { $ } from '@wdio/globals';
 import { expect } from '@wdio/globals';
 import { browser } from '@wdio/globals';
-import DefaultPage from './defaultPage.js';
+import DefaultPage from './default.js';
 import Info from './info.js';
 
 
@@ -61,7 +61,7 @@ class Login extends DefaultPage {
 
 
     async loginFullTest () {  
-        await this.open();
+        await this.openPage();
         await this.SignInButton.click();
         await this.CancelSignIn.click();
         await this.SignInButton.click();

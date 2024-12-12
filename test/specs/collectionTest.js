@@ -1,4 +1,4 @@
-import Collection from '../pageobjects/collectionPage.js';
+import Collection from '../pageobjects/collection.js';
 
 
 describe('Update status', () => {

@@ -1,7 +1,5 @@
-import { $ } from '@wdio/globals'
-import { expect } from '@wdio/globals'
 import { browser } from '@wdio/globals'
-import DefaultPage from './defaultPage.js';
+import DefaultPage from './default.js';
 import Login from './login.js'
 import Info from './info.js';
 
@@ -49,7 +47,7 @@ class Collection extends DefaultPage {
 
 
     async collectionFullTest() {
-        await this.open();
+        await this.openPage();
         await Login.login(Info.username, Info.password);
         await this.UserDropdown.click();
         await this.CollectionLink.click();

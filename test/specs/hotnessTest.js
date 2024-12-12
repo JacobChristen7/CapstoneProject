@@ -1,10 +1,10 @@
-import HamburgerMenu from '../pageobjects/hamburger.js';
+import Hotness from '../pageobjects/hotness';
 
 
 describe('The Hotness', () => {
     it('All links in the hotness sidebar link to the right page', async () => {
-        await HamburgerMenu.hamburgerFunction();
-        await HamburgerMenu.theHotnessCheck();
+        await Hotness.hamburgerFunction();
+        await Hotness.theHotnessCheck();
     })
 })
 

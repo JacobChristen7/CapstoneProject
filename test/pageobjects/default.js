@@ -1,8 +1,10 @@
+import { $ } from '@wdio/globals'
+import { expect } from '@wdio/globals'
 import { browser } from '@wdio/globals'
 
 
 export default class DefaultPage {
-    open () {
+    openPage () {
         return browser.url(`https://boardgamegeek.com/`)
     }
 }

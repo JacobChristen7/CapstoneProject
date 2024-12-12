@@ -1,7 +1,7 @@
 import { $ } from '@wdio/globals'
 import { expect } from '@wdio/globals'
 import { browser } from '@wdio/globals'
-import DefaultPage from './defaultPage.js'
+import DefaultPage from './default.js'
 import Login from './login.js'
 import Info from './info.js';
 
@@ -76,7 +76,7 @@ class RecentlyViewed extends DefaultPage {
     }
 
     async recentlyViewedFullTest() {
-        await this.open();
+        await this.openPage();
         await Login.login(Info.username, Info.password);
         await browser.waitUntil(
             async () => (await this.SearchBar.isClickable()),
