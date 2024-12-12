@@ -3,6 +3,7 @@ import { expect } from '@wdio/globals'
 import { browser } from '@wdio/globals'
 import DefaultPage from './defaultPage.js'
 import Login from './login.js'
+import Info from './info.js';
 
 
 class HamburgerMenu extends DefaultPage {
@@ -22,7 +23,7 @@ class HamburgerMenu extends DefaultPage {
 
     async hamburgerFunction () {
         await this.open();
-        await Login.login('YummyZombie', 'autoTest88');
+        await Login.login(Info.username, Info.password);
         await this.HamburgerOpen.click();
         await this.ShowMoreButton.click();
     }

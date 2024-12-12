@@ -1,7 +1,8 @@
-import { $ } from '@wdio/globals'
-import { expect } from '@wdio/globals'
-import { browser } from '@wdio/globals'
+import { $ } from '@wdio/globals';
+import { expect } from '@wdio/globals';
+import { browser } from '@wdio/globals';
 import DefaultPage from './defaultPage.js';
+import Info from './info.js';
 
 
 class Login extends DefaultPage {
@@ -77,8 +78,8 @@ class Login extends DefaultPage {
         await this.SignUpLink.click();
         await expect(browser).toHaveUrl('https://boardgamegeek.com/join');
         await this.LogoLinkSignUpPage.click();
-        await this.goodAndBadLogin("YummyZombie", "autoTest88", "dajiuhi11212", "allingmes13")
-        await this.login("YummyZombie", "autoTest88");
+        await this.goodAndBadLogin(Info.username, Info.password, "dajiuhi11212", "allingmes13")
+        await this.login(Info.username, Info.password);
     }
 
     async login (username, password) {

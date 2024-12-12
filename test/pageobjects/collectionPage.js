@@ -3,6 +3,7 @@ import { expect } from '@wdio/globals'
 import { browser } from '@wdio/globals'
 import DefaultPage from './defaultPage.js';
 import Login from './login.js'
+import Info from './info.js';
 
 
 class Collection extends DefaultPage {
@@ -49,7 +50,7 @@ class Collection extends DefaultPage {
 
     async collectionFullTest() {
         await this.open();
-        await Login.login("YummyZombie", "autoTest88");
+        await Login.login(Info.username, Info.password);
         await this.UserDropdown.click();
         await this.CollectionLink.click();
         await this.checkAllOptionsIndiSave();
