@@ -1,4 +1,3 @@
-import { browser } from '@wdio/globals'
 import DefaultPage from './default.js';
 import Login from './login.js'
 import Info from './info.js';
@@ -54,30 +53,8 @@ class Collection extends DefaultPage {
         await this.checkAllOptionsIndiSave();
         await this.checkAllOptionsIndiCancel();
         await this.checkAllOptionsIndiXButton();
-        await this.selectAllOptions();
-        await this.StatusTabSave.click();
-        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining("Owned", "Prev. Owned", "For Trade", "Want In Trade", "Want To Play", "Want To Buy", "Preordered", " (Must have)"));
-        await this.selectAllOptions();
-        await this.StatusTabSave.click();
-        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining(""));
-        await this.selectAllOptions();
-        await this.StatusTabCancel.click();
-        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining(""));
-        await this.selectAllOptions();
-        await this.StatusTabXButton.click();
-        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining(""));
-        await this.selectHalfOptions(1, 4, 5, 7);
-        await this.StatusTabSave.click();
-        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining("Prev. Owned", "Want To Play", "Want To Buy", " (Must have)"));
-        await this.selectHalfOptions(1, 4, 5, 7);
-        await this.StatusTabSave.click();
-        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining(""));
-        await this.selectHalfOptions(1, 4, 5, 7);
-        await this.StatusTabCancel.click();
-        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining(""));
-        await this.selectHalfOptions(1, 4, 5, 7);
-        await this.StatusTabXButton.click();
-        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining(""));
+        await this.selectAllOptionsCheck();
+        await this.selectHalfOptionsCheck();
     }
 
     async checkOptionIndiSave(box1, box2 = null, expectText) {
@@ -175,12 +152,42 @@ class Collection extends DefaultPage {
         await this.StatusTabCheckBoxes[7].click();
     }
 
+    async selectAllOptionsCheck() {
+        await this.selectAllOptions();
+        await this.StatusTabSave.click();
+        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining("Owned", "Prev. Owned", "For Trade", "Want In Trade", "Want To Play", "Want To Buy", "Preordered", " (Must have)"));
+        await this.selectAllOptions();
+        await this.StatusTabSave.click();
+        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining(""));
+        await this.selectAllOptions();
+        await this.StatusTabCancel.click();
+        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining(""));
+        await this.selectAllOptions();
+        await this.StatusTabXButton.click();
+        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining(""));
+    }
+
     async selectHalfOptions(box1, box2, box3, box4) {
         await this.StatusBox.click();
         await this.StatusTabCheckBoxes[box1].click();
         await this.StatusTabCheckBoxes[box2].click();
         await this.StatusTabCheckBoxes[box3].click();
         await this.StatusTabCheckBoxes[box4].click();
+    }
+
+    async selectHalfOptionsCheck() {
+        await this.selectHalfOptions(1, 4, 5, 7);
+        await this.StatusTabSave.click();
+        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining("Prev. Owned", "Want To Play", "Want To Buy", " (Must have)"));
+        await this.selectHalfOptions(1, 4, 5, 7);
+        await this.StatusTabSave.click();
+        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining(""));
+        await this.selectHalfOptions(1, 4, 5, 7);
+        await this.StatusTabCancel.click();
+        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining(""));
+        await this.selectHalfOptions(1, 4, 5, 7);
+        await this.StatusTabXButton.click();
+        await expect(this.StatusBoxCheck).toHaveText(expect.stringContaining(""));
     }
 }
 

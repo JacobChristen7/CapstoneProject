@@ -1,6 +1,3 @@
-import { $ } from '@wdio/globals'
-import { expect } from '@wdio/globals'
-import { browser } from '@wdio/globals'
 import DefaultPage from './default.js'
 import Login from './login.js'
 import Info from './info.js';
@@ -9,7 +6,7 @@ import Info from './info.js';
 class Hotness extends DefaultPage {
     
     get HamburgerOpen () {
-        return $('[class="btn btn-empty header-icon tw-mr-2 tw-hidden tw-self-center tw-rounded tw-p-1.5 tw-leading-none tw-outline-none hover:tw-bg-purple-dark hover:tw-text-white focus:tw-bg-purple-dark focus:tw-text-white xl:tw-block"]')
+        return $('[class="btn btn-empty header-icon tw-mr-2 tw-self-center tw-rounded tw-p-1.5 tw-leading-none tw-outline-none hover:tw-bg-purple-dark hover:tw-text-white focus:tw-bg-purple-dark focus:tw-text-white xl:tw-hidden"]')
     }
 
     get ShowMoreButton () {

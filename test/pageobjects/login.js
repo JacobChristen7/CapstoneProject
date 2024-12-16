@@ -1,6 +1,3 @@
-import { $ } from '@wdio/globals';
-import { expect } from '@wdio/globals';
-import { browser } from '@wdio/globals';
 import DefaultPage from './default.js';
 import Info from './info.js';
 
@@ -62,23 +59,10 @@ class Login extends DefaultPage {
 
     async loginFullTest () {  
         await this.openPage();
-        await this.SignInButton.click();
-        await this.CancelSignIn.click();
-        await this.SignInButton.click();
-        await this.XSignIn.click();
-        await this.badLogin("dajiuhi11212", "allingmes13")
-        await this.ForgotUsernameLink.click();
-        await expect(browser).toHaveUrl('https://boardgamegeek.com/geekaccount/forgotusername');
-        await this.LogoLink.click();
-        await this.SignInButton.click();
-        await this.ForgotPasswordLink.click();
-        await expect(browser).toHaveUrl('https://boardgamegeek.com/geekaccount/forgotpassword');
-        await this.LogoLink.click();
-        await this.SignInButton.click();
-        await this.SignUpLink.click();
-        await expect(browser).toHaveUrl('https://boardgamegeek.com/join');
-        await this.LogoLinkSignUpPage.click();
-        await this.goodAndBadLogin(Info.username, Info.password, "dajiuhi11212", "allingmes13")
+        await this.signInTabCancelCheck();
+        await this.badLogin("dajiuhi11212", "allingmes13");
+        await this.signInLinksCheck();
+        await this.goodWithBadLogin(Info.username, Info.password, "dajiuhi11212", "allingmes13");
         await this.login(Info.username, Info.password);
     }
 
@@ -87,6 +71,13 @@ class Login extends DefaultPage {
         await this.UsernameInput.setValue(username);
         await this.PasswordInput.setValue(password);
         await this.Submit.click();
+    }
+
+    async signInTabCancelCheck () {
+        await this.SignInButton.click();
+        await this.CancelSignIn.click();
+        await this.SignInButton.click();
+        await this.XSignIn.click();
     }
 
     async badLogin (badUsername, badPassword) {
@@ -109,7 +100,22 @@ class Login extends DefaultPage {
             expect.stringContaining("Invalid username or password"));
     }
 
-    async goodAndBadLogin (goodUsername, goodPassword, badUsername, badPassword) {
+    async signInLinksCheck () {
+        await this.ForgotUsernameLink.click();
+        await expect(browser).toHaveUrl('https://boardgamegeek.com/geekaccount/forgotusername');
+        await this.LogoLink.click();
+        await this.SignInButton.click();
+        await this.ForgotPasswordLink.click();
+        await expect(browser).toHaveUrl('https://boardgamegeek.com/geekaccount/forgotpassword');
+        await this.LogoLink.click();
+        await this.SignInButton.click();
+        await this.SignUpLink.click();
+        await expect(browser).toHaveUrl('https://boardgamegeek.com/join');
+        await this.LogoLinkSignUpPage.click();
+    }
+    
+    // function is different then having the login and badLogin functions in it.
+    async goodWithBadLogin (goodUsername, goodPassword, badUsername, badPassword) { 
         await this.SignInButton.click();
         await this.UsernameInput.setValue(goodUsername);
         await this.Submit.click();
@@ -131,6 +137,7 @@ class Login extends DefaultPage {
             expect.stringContaining("Invalid username or password"));
         await this.CancelSignIn.click();
     }
+
 }
 
 export default new Login();

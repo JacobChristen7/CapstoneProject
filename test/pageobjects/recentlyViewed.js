@@ -1,10 +1,20 @@
-import { $ } from '@wdio/globals'
-import { expect } from '@wdio/globals'
-import { browser } from '@wdio/globals'
 import DefaultPage from './default.js'
 import Login from './login.js'
 import Info from './info.js';
 
+const boardGames = [
+    "CATAN",
+    "Carcassonne",
+    "Ticket to Ride",
+    "Pandemic",
+    "Chess",
+    "Monopoly",
+    "Risk",
+    "Codenames",
+    "Clue",
+    "Scrabble",
+    "King of Tokyo"
+  ];
 
 class RecentlyViewed extends DefaultPage {
     
@@ -24,10 +34,6 @@ class RecentlyViewed extends DefaultPage {
         return $('img[alt="boardgamegeek logo"]')
     }
 
-    get HamburgerOpen () {
-        return $('[class="btn btn-empty header-icon tw-mr-2 tw-hidden tw-self-center tw-rounded tw-p-1.5 tw-leading-none tw-outline-none hover:tw-bg-purple-dark hover:tw-text-white focus:tw-bg-purple-dark focus:tw-text-white xl:tw-block"]')
-    }
-
     get RecentlyViewedTabArrow () {
         return $('//button[contains(text(), "Recently Viewed")]')
     }
@@ -45,20 +51,40 @@ class RecentlyViewed extends DefaultPage {
     }
 
 
+    async recentlyViewedFullTest() {
+        await this.openPage();
+        await Login.login(Info.username, Info.password);
+        await browser.waitUntil(
+            async () => (await this.SearchBar.isClickable()),
+            {
+                timeout: 5000,
+                timeoutMsg: `Search bar was not clickable:`
+            }
+        );
+        await this.searchForGames();
+        await this.HamburgerOpen.click();
+        await this.gameCheckTop();
+        await this.RecentlyViewedTabCollapse();
+        await this.SeeAllButton.click();
+        await this.removeGame(0);
+        await this.GoHomeAndViewTab();
+        await this.gameCheckAll();
+        await this.SeeAllButton.click();
+        await this.removeGamesMultiple1(3);
+        await this.GoHomeAndViewTab();
+        await this.gameCheck7Games();
+        await this.SeeAllButton.click();
+        await this.removeGamesMultiple1(5);
+        await this.GoHomeAndViewTab();
+        await this.gameCheck2Games(9, 0);
+        await this.RecentlyViewedTabGameLink[1].click();
+        await this.GoHomeAndViewTab();
+        await this.gameCheck2Games(0, 9);
+        await this.SeeAllButton.click();
+        await this.removeGamesMultiple0(2);
+    }
+
     async searchForGames() {
-        const boardGames = [
-            "Catan",
-            "Carcassonne",
-            "Ticket to Ride",
-            "Pandemic",
-            "Chess",
-            "Monopoly",
-            "Risk",
-            "Codenames",
-            "Clue",
-            "Scrabble",
-            "King of Tokyo"
-          ];
 
         for (let i = 0; i < boardGames.length; i++) {
             await this.SearchBar.setValue(boardGames[i]);
@@ -75,126 +101,44 @@ class RecentlyViewed extends DefaultPage {
         }
     }
 
-    async recentlyViewedFullTest() {
-        await this.openPage();
-        await Login.login(Info.username, Info.password);
-        await browser.waitUntil(
-            async () => (await this.SearchBar.isClickable()),
-            {
-                timeout: 5000,
-                timeoutMsg: `Search bar was not clickable:`
-            }
-        );
-        await this.searchForGames();
-        await this.HamburgerOpen.click();
-        await this.gameCheckTop();
+    async RecentlyViewedTabCollapse() {
         await this.RecentlyViewedTabArrow.click();
         await this.RecentlyViewedTabArrow.click();
-        await this.SeeAllButton.click();
-        await this.RemoveFromHistoryButton[0].click();
-        await this.LogoLink.click();
-        await this.HamburgerOpen.click();
-        await this.gameCheck1();
-        await this.SeeAllButton.click();
-        await this.remove3Games();
-        await this.LogoLink.click();
-        await this.HamburgerOpen.click();
-        await this.gameCheck2();
-        await this.SeeAllButton.click();
-        await this.removeRemainingGames();
-        await this.LogoLink.click();
-        await this.HamburgerOpen.click();
-        await this.gameCheck3();
-        await this.RecentlyViewedTabGameLink[1].click();
-        await this.LogoLink.click();
-        await this.HamburgerOpen.click();
-        await this.gameCheck4();
-        await this.SeeAllButton.click();
-        await this.RemoveFromHistoryButton[0].click();
-        await this.RemoveFromHistoryButton[0].click();
     }
 
-    async remove3Games() {
-        await this.RemoveFromHistoryButton[1].moveTo();
-        await this.RemoveFromHistoryButton[1].click();
-        await this.RemoveFromHistoryButton[1].moveTo();
-        await this.RemoveFromHistoryButton[1].click();
-        await this.RemoveFromHistoryButton[1].moveTo();
-        await this.RemoveFromHistoryButton[1].click();
+    async GoHomeAndViewTab() {
+        await this.LogoLink.click();
+        await this.HamburgerOpen.click();
     }
 
-    async removeRemainingGames() {
-        await this.RemoveFromHistoryButton[1].moveTo();
-        await this.RemoveFromHistoryButton[1].click();
-        await this.RemoveFromHistoryButton[1].moveTo();
-        await this.RemoveFromHistoryButton[1].click();
-        await this.RemoveFromHistoryButton[1].moveTo();
-        await this.RemoveFromHistoryButton[1].click();
-        await this.RemoveFromHistoryButton[1].moveTo();
-        await this.RemoveFromHistoryButton[1].click();
-        await this.RemoveFromHistoryButton[1].moveTo();
-        await this.RemoveFromHistoryButton[1].click();
+    async removeGame(num) {
+        await this.RemoveFromHistoryButton[num].moveTo();
+        await this.RemoveFromHistoryButton[num].click();
+    }
+
+    async removeGamesMultiple1(times) {
+        for (let i = 0; i < times; i++) {
+            await this.removeGame(1);
+        }
+    }
+
+    async removeGamesMultiple0(times) {
+        for (let i = 0; i < times; i++) {
+            await this.removeGame(0);
+        }
     }
 
     async gameCheckTop() {
-        const boardGames = [
-            "CATAN",
-            "Carcassonne",
-            "Ticket to Ride",
-            "Pandemic",
-            "Chess",
-            "Monopoly",
-            "Risk",
-            "Codenames",
-            "Clue",
-            "Scrabble",
-            "King of Tokyo"
-          ];
         await expect(this.RecentlyViewedTabGameLink[0]).toHaveText(expect.stringContaining(boardGames[10]));
     }
     
-    async gameCheck1() {
-        const boardGames = [
-            "CATAN",
-            "Carcassonne",
-            "Ticket to Ride",
-            "Pandemic",
-            "Chess",
-            "Monopoly",
-            "Risk",
-            "Codenames",
-            "Clue",
-            "Scrabble",
-            "King of Tokyo"
-          ];
-
-        await expect(this.RecentlyViewedTabGameLink[0]).toHaveText(expect.stringContaining(boardGames[9]));
-        await expect(this.RecentlyViewedTabGameLink[1]).toHaveText(expect.stringContaining(boardGames[8]));
-        await expect(this.RecentlyViewedTabGameLink[2]).toHaveText(expect.stringContaining(boardGames[7]));
-        await expect(this.RecentlyViewedTabGameLink[3]).toHaveText(expect.stringContaining(boardGames[6]));
-        await expect(this.RecentlyViewedTabGameLink[4]).toHaveText(expect.stringContaining(boardGames[5]));
-        await expect(this.RecentlyViewedTabGameLink[5]).toHaveText(expect.stringContaining(boardGames[4]));
-        await expect(this.RecentlyViewedTabGameLink[6]).toHaveText(expect.stringContaining(boardGames[3]));
-        await expect(this.RecentlyViewedTabGameLink[7]).toHaveText(expect.stringContaining(boardGames[2]));
-        await expect(this.RecentlyViewedTabGameLink[8]).toHaveText(expect.stringContaining(boardGames[1]));
-        await expect(this.RecentlyViewedTabGameLink[9]).toHaveText(expect.stringContaining(boardGames[0]));
+    async gameCheckAll() {
+        for (let i = 0; i < 10; i++) {
+            await expect(this.RecentlyViewedTabGameLink[i]).toHaveText(expect.stringContaining(boardGames[9 - i]));
+        }
     }
 
-    async gameCheck2() {
-        const boardGames = [
-            "CATAN",
-            "Carcassonne",
-            "Ticket to Ride",
-            "Pandemic",
-            "Chess",
-            "Monopoly",
-            "Risk",
-            "Codenames",
-            "Clue",
-            "Scrabble",
-            "King of Tokyo"
-          ];
-
+    async gameCheck7Games() {
         await expect(this.RecentlyViewedTabGameLink[0]).toHaveText(expect.stringContaining(boardGames[9]));
         await expect(this.RecentlyViewedTabGameLink[1]).toHaveText(expect.stringContaining(boardGames[5]));
         await expect(this.RecentlyViewedTabGameLink[2]).toHaveText(expect.stringContaining(boardGames[4]));
@@ -204,43 +148,11 @@ class RecentlyViewed extends DefaultPage {
         await expect(this.RecentlyViewedTabGameLink[6]).toHaveText(expect.stringContaining(boardGames[0]));
     }
 
-    async gameCheck3() {
-        const boardGames = [
-            "CATAN",
-            "Carcassonne",
-            "Ticket to Ride",
-            "Pandemic",
-            "Chess",
-            "Monopoly",
-            "Risk",
-            "Codenames",
-            "Clue",
-            "Scrabble",
-            "King of Tokyo"
-          ];
-
-        await expect(this.RecentlyViewedTabGameLink[0]).toHaveText(expect.stringContaining(boardGames[9]));
-        await expect(this.RecentlyViewedTabGameLink[1]).toHaveText(expect.stringContaining(boardGames[0]));
+    async gameCheck2Games(game1Num, game2Num) {
+        await expect(this.RecentlyViewedTabGameLink[0]).toHaveText(expect.stringContaining(boardGames[game1Num]));
+        await expect(this.RecentlyViewedTabGameLink[1]).toHaveText(expect.stringContaining(boardGames[game2Num]));
     }
 
-    async gameCheck4() {
-        const boardGames = [
-            "CATAN",
-            "Carcassonne",
-            "Ticket to Ride",
-            "Pandemic",
-            "Chess",
-            "Monopoly",
-            "Risk",
-            "Codenames",
-            "Clue",
-            "Scrabble",
-            "King of Tokyo"
-          ];
-
-        await expect(this.RecentlyViewedTabGameLink[0]).toHaveText(expect.stringContaining(boardGames[0]));
-        await expect(this.RecentlyViewedTabGameLink[1]).toHaveText(expect.stringContaining(boardGames[9]));
-    }
 }
 
 export default new RecentlyViewed();
