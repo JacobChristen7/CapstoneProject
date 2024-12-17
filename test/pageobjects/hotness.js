@@ -1,14 +1,7 @@
 import DefaultPage from './default.js'
-import Login from './login.js'
-import Info from './info.js';
-
 
 class Hotness extends DefaultPage {
     
-    get HamburgerOpen () {
-        return $('[class="btn btn-empty header-icon tw-mr-2 tw-self-center tw-rounded tw-p-1.5 tw-leading-none tw-outline-none hover:tw-bg-purple-dark hover:tw-text-white focus:tw-bg-purple-dark focus:tw-text-white xl:tw-hidden"]')
-    }
-
     get ShowMoreButton () {
         return $('//span[contains(text(), "+ Show more")]')
     }
@@ -20,7 +13,6 @@ class Hotness extends DefaultPage {
 
     async hamburgerFunction () {
         await this.openPage();
-        await Login.login(Info.username, Info.password);
         await this.HamburgerOpen.click();
         await this.ShowMoreButton.click();
     }
